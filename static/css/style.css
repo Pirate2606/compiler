@@ -1,0 +1,46 @@
+
+body {
+  background-color: #20bf55;
+  background-image: linear-gradient(315deg, #20bf55 0%, #01baef 74%);
+}
+
+.io {
+  background-color: #eec0c6;
+  background-image: linear-gradient(315deg, #eec0c6 0%, #7ee8fa 74%);
+  height: 600px;
+  width: 1000px;
+  font-size: 25px;
+  color: #f700dc;
+}
+
+#input {
+  background-color: #eec0c6;
+  background-image: linear-gradient(315deg, #eec0c6 0%, #7ee8fa 74%);
+  height: 300px;
+  width: 500px;
+}
+
+
+strong {
+  font-size: 30px;
+}
+
+.bg {
+  background-color: black;
+}
+
+footer .container {
+  height: 100px;
+}
+
+header {
+    height: 100px;
+}
+
+.p-5 {
+    padding: 2rem !important;
+}
+
+.navbar {
+    font-size: 30px;
+}
