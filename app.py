@@ -2,14 +2,24 @@ from flask import Flask, render_template, request, redirect, url_for
 import subprocess, os
 from subprocess import PIPE
 
+
+
 app = Flask(__name__)
+app.config['SECRET_KEY'] = "sec"
 
 
 @app.route('/')
-def Compiler():
+def home():
+	return render_template('home.html')
+
+
+@app.route('/compile')
+def compiler():
 	check = ''
 	language = ''
-	return render_template('home.html',
+	flag = 1            # none of the language is selected before-hand
+	return render_template('compiler.html',
+							flag = flag,
 	                        check = check,
 							data = [{'language':'C'}, {'language':'Python'}]
 	)
@@ -17,7 +27,8 @@ def Compiler():
 
 @app.route('/submit', methods = ['GET','POST'])
 def submit():
-	if request.method == 'POST':
+	flag = 0
+	if request.method == "POST":
 
 		code = request.form['code']
 		inp = request.form['input']
@@ -31,13 +42,16 @@ def submit():
 			check = 'checked'
 
 		output = complier_output(code, inp, chk, lan)
-	return render_template('home.html',
+	return render_template('compiler.html',
+							lang = lan,
+							flag = flag,
 	                        code = code,
 							input = inp,
 							output = output,
 							check = check,
 							data = [{'language':'C'}, {'language':'Python'}]
     )
+
 
 
 def createFile(code, lan):

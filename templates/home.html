@@ -4,48 +4,7 @@
 {% block content %}
 
 	<div class="container">
-		<form action="/submit" method="post">
-			<br>
-			<hr>
-			<div class="input-group mb-3">
-	  			<div class="input-group-prepend">
-	    			<label class="input-group-text" for="inputGroupSelect01">Language</label>
-	  			</div>
-	  			<select class="custom-select" id="inputGroupSelect01" name = "comp_select">
-					{% for o in data %}
-						<option value="{{ o.language }}">{{ o.language }}</option>
-					{% endfor %}
-	  			</select>
-			</div>
-			<br>
-			<hr>
-			{% if output %}
-				<a class = "btn btn-success scroll" href="#out">View Output</a>
-				<br>
-				<hr>
-			{% endif %}
-
-			<strong>Type your code here:</strong>
-			<br><br>
-			<textarea class = "io" name="code" required placeholder="//Enter your code here.">{{code}}</textarea>
-			<br>
-			<hr>
-			<strong>Enter your input:</strong>
-			<br><br>
-			<textarea id = "input" name="input" placeholder="//Your Input here.">{{input}}</textarea>
-			<br><br>
-			<input type="checkbox" name="check" id="GFG" value="1" {{check}}> Enable input
-			<br><br>
-			<button class = "btn-lg btn-success" type="submit" >Run Code</button>
-			<br>
-			<hr>
-			<br>
-			<strong id = "out">This is the output : </strong>
-			<br><br>
-			<textarea class = "io" name="output" disabled placeholder="//Your output here.">{{output}}</textarea>
-			<hr>
-		</form>
-		<br><br>
+		<h1>WELCOME</h1>
 	</div>
 
 {% endblock %}
