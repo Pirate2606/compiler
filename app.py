@@ -20,7 +20,7 @@ def compiler():
 	flag = 1            # none of the language is selected before-hand
 	return render_template('compiler.html',
 				flag = flag,
-	                       check = check,
+				check = check,
 				data = [{'language':'C'}, {'language':'Python'}]
 	)
 
@@ -30,41 +30,41 @@ def submit():
 	flag = 0
 	if request.method == "POST":
 
-	    code = request.form['code']
-	    inp = request.form['input']
-	    chk = request.form.get('check')
-	    lan = request.form.get('comp_select')
+		code = request.form['code']
+		inp = request.form['input']
+		chk = request.form.get('check')
+		lan = request.form.get('comp_select')
 
-	    if  not chk == '1':
-		inp = ""
-		check = ''
-	    else:
-		check = 'checked'
+		if  not chk == '1':
+			inp = ""
+			check = ''
+		else:
+			check = 'checked'
 
-	    output = complier_output(code, inp, chk, lan)
-	
+		output = complier_output(code, inp, chk, lan)
+
 	return render_template('compiler.html',
 				lang = lan,
 				flag = flag,
-	                       code = code,
+				code = code,
 				input = inp,
 				output = output,
 				check = check,
 				data = [{'language':'C'}, {'language':'Python'}]
-        )
+		)
 
 
 
 def createFile(code, lan):
 	if lan == "Python":
-	    extension = ".py"
+		extension = ".py"
 	else:
-	    extension = ".c"
+		extension = ".c"
 
 	fileName = "try" + extension
 
 	if not os.path.exists(fileName):
-	    os.open(fileName, os.O_CREAT)
+		os.open(fileName, os.O_CREAT)
 
 	fd = os.open(fileName, os.O_WRONLY)
 
@@ -78,34 +78,34 @@ def complier_output(code, inp, chk, lan):
 
 	if lan == 'Python':
 
-	    createFile(code, lan)
+		createFile(code, lan)
 
-	    process = subprocess.Popen(['python3', 'try.py'], stdout = PIPE, stdin = PIPE, stderr = PIPE)
+		process = subprocess.Popen(['python3', 'try.py'], stdout = PIPE, stdin = PIPE, stderr = PIPE)
 
-	    #communicate() returns a tuple (stdoutdata, stderrdata)
-	    process_out = process.communicate(input = inp.encode())
-	    output = process_out[0]
-	    error = process_out[1]
-	    check = process.returncode
-	    if check == 0:
-		return output.decode("utf-8")
-	    else:
-		return error.decode("utf-8")
+		#communicate() returns a tuple (stdoutdata, stderrdata)
+		process_out = process.communicate(input = inp.encode())
+		output = process_out[0]
+		error = process_out[1]
+		check = process.returncode
+		if check == 0:
+			return output.decode("utf-8")
+		else:
+			return error.decode("utf-8")
 	else:
 
-	    createFile(code, lan)
-	    process = subprocess.run(['gcc','-o','out','try.c'], stderr = PIPE,)
-	    check = process.returncode
+		createFile(code, lan)
+		process = subprocess.run(['gcc','-o','out','try.c'], stderr = PIPE,)
+		check = process.returncode
 
-	    if check == 0:
-		if chk == '1':
-		    run = subprocess.run(["./out"], input = inp.encode(), stdout = PIPE)
+		if check == 0:
+			if chk == '1':
+				run = subprocess.run(["./out"], input = inp.encode(), stdout = PIPE)
+			else:
+				run = subprocess.run(["./out"], stdout = PIPE)
+			return run.stdout.decode("utf-8")
 		else:
-		    run = subprocess.run(["./out"], stdout = PIPE)
-		return run.stdout.decode("utf-8")
-	    else:
-		return process.stderr.decode("utf-8")
+			return process.stderr.decode("utf-8")
 
 
 if __name__ == '__main__':
-    app.run(debug = True)
+	app.run(debug = True)
