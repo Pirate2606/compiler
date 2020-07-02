@@ -1,1 +1,1 @@
-# electric-shop
+# Online compiler for C and Python
