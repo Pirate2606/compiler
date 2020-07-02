@@ -20,7 +20,7 @@ def compiler():
 	flag = 1            # none of the language is selected before-hand
 	return render_template('compiler.html',
 				flag = flag,
-	                        check = check,
+	                       check = check,
 				data = [{'language':'C'}, {'language':'Python'}]
 	)
 
@@ -46,7 +46,7 @@ def submit():
 	return render_template('compiler.html',
 				lang = lan,
 				flag = flag,
-	                        code = code,
+	                       code = code,
 				input = inp,
 				output = output,
 				check = check,
@@ -83,8 +83,9 @@ def complier_output(code, inp, chk, lan):
 	    process = subprocess.Popen(['python3', 'try.py'], stdout = PIPE, stdin = PIPE, stderr = PIPE)
 
 	    #communicate() returns a tuple (stdoutdata, stderrdata)
-	    output = process.communicate(input = inp.encode())[0]
-	    error = process.communicate(input = inp.encode())[1]
+	    process_out = process.communicate(input = inp.encode())
+	    output = process_out[0]
+	    error = process_out[1]
 	    check = process.returncode
 	    if check == 0:
 		return output.decode("utf-8")
