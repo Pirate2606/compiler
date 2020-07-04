@@ -29,8 +29,14 @@ strong {
   background-color: black;
 }
 
+.bottom {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
 footer .container {
-  height: 100px;
+    height: 70px;
 }
 
 header {
@@ -42,5 +48,10 @@ header {
 }
 
 .navbar {
-    font-size: 30px;
+    font-size: 25px;
+}
+
+#logo {
+  max-height: 75px;
+  max-width: 75px;
 }

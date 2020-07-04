@@ -1,27 +1,48 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
+from flask_login import logout_user, login_required
 import subprocess, os
 from subprocess import PIPE
+from config import Config
+from models import db, login_manager
+from oauth import blueprint
+from cli import create_db
 
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = "sec"
+app.config.from_object(Config)                                   #app.config
+app.register_blueprint(blueprint, url_prefix="/login")
+app.cli.add_command(create_db)                                  #creating database
+db.init_app(app)                                                # equivalent to "flask db init"
+login_manager.init_app(app)
+
+# for running on local server
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 
 
-@app.route('/')
+# routes
+
+@app.route("/")
 def home():
-	return render_template('home.html')
+    return render_template("home.html")
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    flash("You have logged out")
+    return redirect(url_for("home"))
 
 
 @app.route('/compile')
 def compiler():
 	check = ''
-	language = ''
 	flag = 1            # none of the language is selected before-hand
 	return render_template('compiler.html',
-				flag = flag,
-				check = check,
-				data = [{'language':'C'}, {'language':'Python'}]
+							flag = flag,
+							check = check,
+							data = [{'language':'C'}, {'language':'Python'}]
 	)
 
 
@@ -42,17 +63,15 @@ def submit():
 			check = 'checked'
 
 		output = complier_output(code, inp, chk, lan)
-
 	return render_template('compiler.html',
-				lang = lan,
-				flag = flag,
-				code = code,
-				input = inp,
-				output = output,
-				check = check,
-				data = [{'language':'C'}, {'language':'Python'}]
-		)
-
+							lang = lan,
+							flag = flag,
+							code = code,
+							input = inp,
+							output = output,
+							check = check,
+							data = [{'language':'C'}, {'language':'Python'}]
+	)
 
 
 def createFile(code, lan):
