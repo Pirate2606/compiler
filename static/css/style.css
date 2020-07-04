@@ -55,3 +55,34 @@ header {
   max-height: 75px;
   max-width: 75px;
 }
+
+.landing {
+    background-image: url("https://hrcdn.net/patterns/coffee.png");
+    background-size: cover;
+}
+
+.align {
+    color : white;
+    text-align: center;
+}
+
+.large {
+    font-size: 50px;
+    padding-top: 80px;
+}
+
+.less_large {
+    font-size: 40px;
+}
+
+.jumbotron {
+    height: 650px;
+}
+
+.radius {
+    border-radius: 50%;
+}
+
+.about-back {
+    background-image: url("../about_back.jpg");
+}
