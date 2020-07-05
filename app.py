@@ -1,15 +1,16 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
+from form import Feedback
+from sendMail import send_mail
 from flask_login import logout_user, login_required
 import subprocess, os
 from subprocess import PIPE
 from config import Config
-from models import db, login_manager
+from models import db, login_manager, app
 from oauth import blueprint
 from cli import create_db
 
 
 
-app = Flask(__name__)
 app.config.from_object(Config)                                   #app.config
 app.register_blueprint(blueprint, url_prefix="/login")
 app.cli.add_command(create_db)                                  #creating database
@@ -23,9 +24,17 @@ os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 
 # routes
 
-@app.route("/")
+@app.route("/", methods = ['GET','POST'])
 def home():
-    return render_template("home.html")
+    form = Feedback()
+    if form.validate_on_submit():
+        email = form.email.data
+        message = form.message.data
+        send_mail(email, message)
+        flash('Thanks for the feedback!')
+        return redirect(url_for('home'))
+
+    return render_template("home.html", form = form)
 
 @app.route("/logout")
 @login_required
