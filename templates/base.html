@@ -31,13 +31,18 @@
           	});
         </script>
 
-        <header class="text-gray-700 body-font">
-            <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
-                <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
-					<img src="static/logo.png" alt="..." id="logo">
-                    <span class="ml-3 text-xl">Naitan's Production</span>
-                </a>
-                <nav class="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-l md:border-gray-400	flex flex-wrap items-center text-base justify-center">
+
+        <div class="container mx-auto flex flex-wrap p-3 flex-col md:flex-row items-center">
+            <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
+				<img src="static/logo.png" alt="..." id="logo">
+                <span class="ml-3 text-xl">Naitan's Production</span>
+            </a>
+            <nav class="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-l md:border-gray-400 flex flex-wrap items-center text-base justify-center navbar-expand-lg ">
+				<button class="navbar-toggler ml-auto custom-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+					<div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <a class="hover:text-gray-900 navbar" href="{{ url_for('home') }}"><strong>Home</strong></a>
 					{% if home %}
 						<a class="hover:text-gray-900 navbar scroll" href="#about">About</a>
@@ -45,13 +50,13 @@
 					{% endif %}
 					<a class="hover:text-gray-900 navbar" href="{{ url_for('compiler') }}">Compiler</a>
 					{% if not current_user.is_authenticated %}
-                    	<a class="ml-20 navbar btn btn-outline-danger" href="{{ url_for('google.login') }}">Login</a>
+                    	<a class="ml-lg-20 navbar btn btn-outline-danger" href="{{ url_for('google.login') }}">Login</a>
 					{% endif %}
 					{% if current_user.is_authenticated %}
 						<div class="dropdown">
-							<a class="ml-20 hover:text-gray-900 navbar" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<a class="hover:text-gray-900 navbar" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								<div class="w-20 h-20 inline-flex items-center">
-										<img class = "radius" src="{{ profile_pic }}" alt=""><i class="fas fa-caret-down"></i>
+									<img class = "radius" src="{{ profile_pic }}" alt=""><i class="fas fa-caret-down"></i>
 								</div>
   							</a>
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -61,10 +66,9 @@
 							</div>
 						</div>
 					{% endif %}
-                </nav>
-            </div>
-        </header>
-		<br><br>
+				</div>
+            </nav>
+        </div>
 
 		{% block content %}
 
@@ -72,7 +76,7 @@
 
 		<br><br>
 		<footer class="text-gray-700 bg bottom">
-			<div class="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
+			<div class="container-lg px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
 		    	<a class="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
 		      		<span class="ml-3 text-xl">Naitan's Production</span>
 		    	</a>
