@@ -1,11 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, g
 from form import Feedback
 from sendMail import send_mail
-from flask_login import logout_user, login_required
+from flask_login import logout_user, login_required, current_user
 import subprocess, os
 from subprocess import PIPE
 from config import Config
-from models import db, login_manager, app
+from models import db, login_manager, app, User
 from oauth import blueprint
 from cli import create_db
 
@@ -26,26 +26,33 @@ os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 
 @app.route("/", methods = ['GET','POST'])
 def home():
-    home = 1
-    form = Feedback()
-    if form.validate_on_submit():
-        
-        email = form.email.data
-        message = form.message.data
+	home = 1
+	form = Feedback()
+	profile_pic = ""
+	g.user = current_user.get_id()
+	if g.user:
+		id = int(g.user)
+		profile_pic = User.query.get(id).profile_pic
 
-        send_mail(email, message)
-        flash('Thanks for the feedback!')
 
-        return redirect(url_for('home'))
+	if form.validate_on_submit():
 
-    return render_template("home.html", form = form, home = home)
+		email = form.email.data
+		message = form.message.data
+
+		send_mail(email, message)
+		flash('Thanks for the feedback!')
+
+		return redirect(url_for('home'))
+
+	return render_template("home.html", form = form, home = home, profile_pic = profile_pic)
 
 @app.route("/logout")
 @login_required
 def logout():
-    logout_user()
-    flash("You have logged out")
-    return redirect(url_for("home"))
+	logout_user()
+	flash("You have logged out")
+	return redirect(url_for("home"))
 
 
 @app.route('/compile')
@@ -55,7 +62,8 @@ def compiler():
 	return render_template('compiler.html',
 							flag = flag,
 							check = check,
-							data = [{'language':'C'}, {'language':'Python'}]
+							profile_pic = profile_pic,
+							data = [{'language':'C'}, {'language':'Python'}, {'language':'Java'}]
 	)
 
 
@@ -83,15 +91,18 @@ def submit():
 							input = inp,
 							output = output,
 							check = check,
-							data = [{'language':'C'}, {'language':'Python'}]
+							profile_pic = profile_pic,
+							data = [{'language':'C'}, {'language':'Python'}, {'language':'Java'}]
 	)
 
 
 def createFile(code, lan):
 	if lan == "Python":
 		extension = ".py"
-	else:
+	elif lan == 'C':
 		extension = ".c"
+	else:
+		extension = ".java"
 
 	fileName = "try" + extension
 
@@ -123,7 +134,8 @@ def complier_output(code, inp, chk, lan):
 			return output.decode("utf-8")
 		else:
 			return error.decode("utf-8")
-	else:
+
+	elif lan == "C":
 
 		createFile(code, lan)
 		process = subprocess.run(['gcc','-o','out','try.c'], stderr = PIPE,)
@@ -134,6 +146,21 @@ def complier_output(code, inp, chk, lan):
 				run = subprocess.run(["./out"], input = inp.encode(), stdout = PIPE)
 			else:
 				run = subprocess.run(["./out"], stdout = PIPE)
+			return run.stdout.decode("utf-8")
+		else:
+			return process.stderr.decode("utf-8")
+
+	else:
+
+		createFile(code, lan)
+		process = subprocess.run(['javac','try.java'], stderr = PIPE,)
+		check = process.returncode
+
+		if check == 0:
+			if chk == '1':
+				run = subprocess.run(["java", "main"], input = inp.encode(), stdout = PIPE)
+			else:
+				run = subprocess.run(["java", "main"], stdout = PIPE)
 			return run.stdout.decode("utf-8")
 		else:
 			return process.stderr.decode("utf-8")

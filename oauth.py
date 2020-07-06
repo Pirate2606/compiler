@@ -30,6 +30,7 @@ def google_logged_in(blueprint, token):
     info = resp.json()
     user_id = info["id"]
 
+
     # Find this OAuth token in the database, or create it
     query = OAuth.query.filter_by(provider=blueprint.name, provider_user_id=user_id)
     try:
@@ -43,7 +44,7 @@ def google_logged_in(blueprint, token):
 
     else:
         # Create a new local user account for this user
-        user = User(email=info["email"])
+        user = User(email=info["email"], profile_pic=info["picture"])
         # Associate the new local user account with the OAuth token
         oauth.user = user
         # Save and commit our database models

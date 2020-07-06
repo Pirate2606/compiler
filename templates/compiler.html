@@ -10,9 +10,9 @@
 			<hr>
 			<div class="input-group mb-3">
 	  			<div class="input-group-prepend">
-	    			<label class="input-group-text" for="inputGroupSelect01">Language</label>
+	    			<label class="input-group-text" for="inputGroup">Language</label>
 	  			</div>
-	  			<select class="custom-select" id="inputGroupSelect01" name = "comp_select">
+	  			<select class="custom-select" id="inputGroup" name = "comp_select">
 					{% if flag %}
 						{% for o in data %}
 							<option value="{{ o.language }}">{{ o.language }}</option>
