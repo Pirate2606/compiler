@@ -24,17 +24,22 @@ os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 
 # routes
 
-@app.route("/", methods = ['GET','POST'])
-def home():
-	home = 1
-	form = Feedback()
+def get_profile_pic():
+
 	profile_pic = ""
 	g.user = current_user.get_id()
 	if g.user:
 		id = int(g.user)
 		profile_pic = User.query.get(id).profile_pic
 
+	return profile_pic
 
+
+@app.route("/", methods = ['GET','POST'])
+def home():
+	home = 1
+	form = Feedback()
+	profile_pic = get_profile_pic()
 	if form.validate_on_submit():
 
 		email = form.email.data
@@ -57,6 +62,7 @@ def logout():
 
 @app.route('/compile')
 def compiler():
+	profile_pic = get_profile_pic()
 	check = ''
 	flag = 1            # none of the language is selected before-hand
 	return render_template('compiler.html',
@@ -70,6 +76,7 @@ def compiler():
 @app.route('/submit', methods = ['GET','POST'])
 def submit():
 	flag = 0
+	profile_pic = get_profile_pic()
 	if request.method == "POST":
 
 		code = request.form['code']
