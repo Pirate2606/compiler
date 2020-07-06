@@ -26,15 +26,19 @@ os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 
 @app.route("/", methods = ['GET','POST'])
 def home():
+    home = 1
     form = Feedback()
     if form.validate_on_submit():
+        
         email = form.email.data
         message = form.message.data
+
         send_mail(email, message)
         flash('Thanks for the feedback!')
+
         return redirect(url_for('home'))
 
-    return render_template("home.html", form = form)
+    return render_template("home.html", form = form, home = home)
 
 @app.route("/logout")
 @login_required

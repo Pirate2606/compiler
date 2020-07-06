@@ -40,6 +40,10 @@
                 <nav class="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-l md:border-gray-400	flex flex-wrap items-center text-base justify-center">
                     <a class="hover:text-gray-900 navbar" href="{{ url_for('home') }}"><strong>Home</strong></a>
 					<a class="hover:text-gray-900 navbar" href="{{ url_for('compiler') }}">Compiler</a>
+					{% if home %}
+						<a class="hover:text-gray-900 navbar scroll" href="#about">About</a>
+						<a class="hover:text-gray-900 navbar scroll" href="#contact">Contact us</a>
+					{% endif %}
 					{% if not current_user.is_authenticated %}
                     	<a class="mr-5 hover:text-gray-900 navbar" href="{{ url_for('google.login') }}">Login</a>
 					{% endif %}
