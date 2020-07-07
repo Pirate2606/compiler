@@ -1,56 +1,41 @@
 
 body {
-    background-color: #20bf55;
-    background-image: linear-gradient(315deg, #20bf55 0%, #01baef 74%);
+    background-image: linear-gradient(60deg, #3d3393 0%, #2b76b9 37%, #2cacd1 65%, #35eb93 100%);
 }
 
-.io {
-    float = left;
-    background-color: #eec0c6;
-    background-image: linear-gradient(315deg, #eec0c6 0%, #7ee8fa 74%);
-    height: 600px;
-    width: 100%;
-    font-size: 22px;
-    color: #f700dc;
-}
-
-#input {
-    background-color: #eec0c6;
-    background-image: linear-gradient(315deg, #eec0c6 0%, #7ee8fa 74%);
-    height: 300px;
-    font-size: 18px;
-    color: #f700dc;
-}
-
-
-strong {
-    font-size: 30px;
-}
-
-.bg {
-    background-color: black;
-}
-
-.bottom {
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-}
-
-footer .container-lg {
-    height: 70px;
-}
-
-
-.navbar {
+/* navbar */
+.navbar-links {
+    font-family: 'Montserrat', sans-serif;
+    color: black;
+    margin-left: 10px;
     font-size: 25px;
+    text-align: center;
+}
+
+.radius {
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
 }
 
 #logo {
-    max-height: 75px;
-    max-width: 75px;
+    margin-left: 70px;
+    margin-right: 50px;
+    max-height: 65px;
+    max-width: 65px;
 }
 
+.login-btn {
+    margin-right: 70px;
+    margin-left: 70px;
+}
+
+.profile-pic {
+    margin: auto;
+}
+
+
+/* home - landing page */
 .landing {
     background-image: url("https://hrcdn.net/patterns/coffee.png");
     background-size: cover;
@@ -62,30 +47,79 @@ footer .container-lg {
 }
 
 .large {
-    font-size: 50px;
+    font-size: 45px;
     padding-top: 80px;
+    font-family: 'Montserrat Subrayada', sans-serif;
 }
 
 .less_large {
     font-size: 30px;
+    font-family: 'Lobster', cursive;
 }
 
-.jumbotron {
+.jumbo-height {
     height: 650px;
 }
 
-.radius {
-    border-radius: 50%;
+
+/*FOOTER */
+.footer {
+    text-align: center;
+    font-family: 'Courgette', cursive;
+    margin: auto;
+    font-size: 20px;
+    color: white;
+}
+
+.font-feedback {
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+/* About */
+.twitter-logo {
+    color: #1DA1F2;
+}
+
+.linkedin-logo {
+    color: #005F91;
 }
 
 .about-back {
     background-image: url("../about_back.jpg");
 }
 
-.custom-toggler .navbar-toggler-icon {
-    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,102,203, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+.font-primary {
+    font-family: 'Source Code Pro', monospace;
 }
 
-.custom-toggler.navbar-toggler {
-    border-color: rgb(232, 20, 209);
+.font-secondary {
+    font-family: 'Karla', sans-serif;
+}
+
+
+/* compiler */
+.font-io {
+    font-family: 'Aldrich', sans-serif;
+    font-size: 30px;
+}
+
+.io {
+    font-family: 'PT Sans', sans-serif;
+    float = left;
+    background-color: #eec0c6;
+    background-image: linear-gradient(315deg, #eec0c6 0%, #7ee8fa 74%);
+    height: 600px;
+    width: 100%;
+    font-size: 22px;
+    color: #f700dc;
+}
+
+#input {
+    font-family: 'PT Sans', sans-serif;
+    background-color: #eec0c6;
+    background-image: linear-gradient(315deg, #eec0c6 0%, #7ee8fa 74%);
+    height: 300px;
+    font-size: 18px;
+    color: #f700dc;
 }
