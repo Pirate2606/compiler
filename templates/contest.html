@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><hr><br>
+<div class="container">
+    <h3 class="contest-heading"><u>Active Contests:</u></h3>
+    <br>
+    {% for item in all_contests %}
+        {% if item.contest_status == "active" %}
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb contest-back">
+                    <li class="breadcrumb-item mr-auto contest-name" aria-current="page">{{ item.contest_name }}</li>
+                    <li class="mr-auto contest-text">Some text</li>
+                    <li class="ml-auto"><a href="{{ item.contest_link }}" class="btn btn-outline-success btn-lg contest-button">Enter</a></li>
+                </ol>
+            </nav>
+        {% elif item.id == 3 %}
+            <hr>
+            <h3 class="contest-heading"><u>Previous Contests:</u></h3>
+            <br>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb contest-back">
+                    <li class="breadcrumb-item mr-auto contest-name" aria-current="page">{{ item.contest_name }}</li>
+                    <li class="mr-auto contest-text">Event has ended</li>
+                    <li class="ml-auto"><a href="{{ item.contest_link }}" class="btn btn-outline-success btn-lg contest-button">View</a></li>
+                </ol>
+            </nav>
+        {% else %}
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb contest-back">
+                    <li class="breadcrumb-item mr-auto contest-name" aria-current="page">{{ item.contest_name }}</li>
+                    <li class="mr-auto contest-text">Event has ended</li>
+                    <li class="ml-auto"><a href="{{ item.contest_link }}" class="btn btn-outline-success btn-lg contest-button">View</a></li>
+                </ol>
+            </nav>
+        {% endif %}
+    {% endfor %}
+</div>
+
+{% endblock %}

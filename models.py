@@ -7,6 +7,22 @@ app = Flask(__name__)
 db = SQLAlchemy()
 
 
+class Practice(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    problem_title = db.Column(db.String(256))
+    problem_desc = db.Column(db.String(256))
+    problem_link = db.Column(db.String(256))
+    problem_site = db.Column(db.String(256))
+    problem_diff = db.Column(db.String(256))
+
+
+class Contest(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    contest_name = db.Column(db.String(256))
+    contest_link = db.Column(db.String(256))
+    contest_status = db.Column(db.String(256))
+
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(256), unique=True)

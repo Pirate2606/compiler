@@ -5,11 +5,16 @@ from flask_login import logout_user, login_required, current_user
 import subprocess, os
 from subprocess import PIPE
 from config import Config
-from models import db, login_manager, app, User
+from models import db, login_manager, app, User, Contest, Practice
 from oauth import blueprint
 from cli import create_db
+from flask_migrate import Migrate
 
 
+#################################
+#### SETTING UP APP ############
+################################
+Migrate(app, db)
 
 app.config.from_object(Config)                                   #app.config
 app.register_blueprint(blueprint, url_prefix="/login")
@@ -22,18 +27,9 @@ os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 
 
-# routes
-
-def get_profile_pic():
-
-	profile_pic = ""
-	g.user = current_user.get_id()
-	if g.user:
-		id = int(g.user)
-		profile_pic = User.query.get(id).profile_pic
-
-	return profile_pic
-
+##################################
+########### ROUTES ###############
+##################################
 
 @app.route("/", methods = ['GET','POST'])
 def home():
@@ -101,6 +97,38 @@ def submit():
 							profile_pic = profile_pic,
 							data = [{'language':'C'}, {'language':'Python'}, {'language':'Java'}]
 	)
+
+
+@app.route('/contest')
+def contest():
+	profile_pic = get_profile_pic()
+	contest = Contest()
+	all_contests = contest.query.all()
+
+	return render_template('contest.html', profile_pic = profile_pic, all_contests = all_contests)
+
+
+@app.route('/practice')
+def practice():
+	profile_pic = get_profile_pic()
+	practice = Practice()
+	practice_info = practice.query.all()
+	return render_template('practice.html', profile_pic = profile_pic, practice_info = practice_info)
+
+
+##################################
+######### FUNCTIONS #############
+#################################
+
+def get_profile_pic():
+
+	profile_pic = ""
+	g.user = current_user.get_id()
+	if g.user:
+		id = int(g.user)
+		profile_pic = User.query.get(id).profile_pic
+
+	return profile_pic
 
 
 def createFile(code, lan):
