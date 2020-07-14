@@ -120,7 +120,16 @@ def practice():
 	profile_pic = get_profile_pic()
 	practice = Practice()
 	practice_info = practice.query.all()
-	return render_template('practice.html', profile_pic = profile_pic, practice_info = practice_info)
+	return render_template('practice.html',
+							profile_pic = profile_pic,
+							practice_info = practice_info
+	)
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'), 404
+
 
 
 ##################################

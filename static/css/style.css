@@ -176,3 +176,22 @@ body {
 .practice-text {
     font-size: 20px;
 }
+
+
+/* 404 Page */
+
+.four {
+    margin: auto;
+}
+
+.four-heading {
+    font-size: 40px;
+}
+
+.four-text {
+    font-size: 30px;
+}
+
+.four-container {
+    text-align: center;
+}
