@@ -128,7 +128,8 @@ def practice():
 
 @app.errorhandler(404)
 def page_not_found(error):
-    return render_template('404.html'), 404
+	profile_pic = get_profile_pic()
+	return render_template('404.html', profile_pic = profile_pic), 404
 
 
 
