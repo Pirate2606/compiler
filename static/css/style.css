@@ -1,15 +1,23 @@
 
 body {
-    background-image: linear-gradient(60deg, #3d3393 0%, #2b76b9 37%, #2cacd1 65%, #35eb93 100%);
+    background-color: white;
 }
 
 /* navbar */
 .navbar-links {
     font-family: 'Montserrat', sans-serif;
-    color: black;
+    color: white;
     margin-left: 10px;
     font-size: 25px;
     text-align: center;
+}
+
+.custom-toggler .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,102,203, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
+.custom-toggler.navbar-toggler {
+  border-color: rgb(255,102,203);
 }
 
 .radius {
@@ -65,9 +73,8 @@ body {
 /*FOOTER */
 .footer {
     text-align: center;
-    font-family: 'Courgette', cursive;
     margin: auto;
-    font-size: 20px;
+    font-size: 15px;
     color: white;
 }
 
@@ -79,10 +86,12 @@ body {
 /* About */
 .twitter-logo {
     color: #1DA1F2;
+    padding-right: 5px;
 }
 
 .linkedin-logo {
     color: #005F91;
+    padding-left: 5px;
 }
 
 .about-back {
@@ -93,9 +102,6 @@ body {
     font-family: 'Source Code Pro', monospace;
 }
 
-.font-secondary {
-    font-family: 'Karla', sans-serif;
-}
 
 
 /* compiler */
@@ -107,21 +113,19 @@ body {
 .io {
     font-family: 'PT Sans', sans-serif;
     float = left;
-    background-color: #eec0c6;
-    background-image: linear-gradient(315deg, #eec0c6 0%, #7ee8fa 74%);
+    background-color: #1C2434;
     height: 600px;
     width: 100%;
     font-size: 22px;
-    color: #f700dc;
+    color: #5EAFE9;
 }
 
 #input {
     font-family: 'PT Sans', sans-serif;
-    background-color: #eec0c6;
-    background-image: linear-gradient(315deg, #eec0c6 0%, #7ee8fa 74%);
+    background-color: #1C2434;
     height: 300px;
     font-size: 18px;
-    color: #f700dc;
+    color: #5EAFE9;
 }
 
 
@@ -130,7 +134,6 @@ body {
 .contest-name {
     font-size: 23px;
     color: #D93240;
-    font-family: 'PT Sans', sans-serif;
 }
 
 .contest-text {
@@ -146,12 +149,10 @@ body {
 }
 
 .contest-button {
-    width: 150px;
+    width: 148px;
 }
 
-.contest-back {
-    background-image: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
-}
+
 
 
 /* PRACTICE */

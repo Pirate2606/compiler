@@ -21,6 +21,9 @@ class Contest(db.Model):
     contest_name = db.Column(db.String(256))
     contest_link = db.Column(db.String(256))
     contest_status = db.Column(db.String(256))
+    start = db.Column(db.String(256))
+    end = db.Column(db.String(256))
+    timing_id = db.Column(db.String(256))
 
 
 class User(UserMixin, db.Model):

@@ -22,7 +22,7 @@ app.cli.add_command(create_db)                                  #creating databa
 db.init_app(app)                                                # equivalent to "flask db init"
 login_manager.init_app(app)
 
-# for running on local server
+
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 
@@ -103,9 +103,16 @@ def submit():
 def contest():
 	profile_pic = get_profile_pic()
 	contest = Contest()
-	all_contests = contest.query.all()
+	active_contests = contest.query.filter_by(contest_status = "active").all()
+	in_active_contests = contest.query.filter_by(contest_status = "in-active").all()
+	future_contests = contest.query.filter_by(contest_status = "future").all()
 
-	return render_template('contest.html', profile_pic = profile_pic, all_contests = all_contests)
+	return render_template('contest.html',
+							profile_pic = profile_pic,
+							active_contests = active_contests,
+							future_contests = future_contests,
+							in_active_contests = in_active_contests
+	)
 
 
 @app.route('/practice')

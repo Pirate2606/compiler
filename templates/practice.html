@@ -15,7 +15,7 @@
                     {{ item.problem_site }}
                 </div>
             </div>
-            <br><br>
+            <br>
         {% elif item.problem_diff == "medium" %}
             <div class="card border-warning card-border-size text-center card-back">
                 <div class="card-body">
@@ -27,7 +27,7 @@
                     {{ item.problem_site }}
                 </div>
             </div>
-            <br><br>
+            <br>
         {% else %}
             <div class="card border-danger card-border-size text-center card-back">
                 <div class="card-body">
@@ -39,9 +39,9 @@
                     {{ item.problem_site }}
                 </div>
             </div>
-            <br><br>
+            <br>
         {% endif %}
     {% endfor %}
 </div>
-<br><br>
+<br><br><br>
 {% endblock %}
