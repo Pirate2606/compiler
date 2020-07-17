@@ -100,6 +100,7 @@ def submit():
 
 
 @app.route('/contest')
+@login_required
 def contest():
 	profile_pic = get_profile_pic()
 	contest = Contest()
@@ -116,10 +117,12 @@ def contest():
 
 
 @app.route('/practice')
+@login_required
 def practice():
 	profile_pic = get_profile_pic()
 	practice = Practice()
-	practice_info = practice.query.all()
+	page = request.args.get("page", 1, type=int)
+	practice_info = practice.query.paginate(page=page, per_page=5)
 	return render_template('practice.html',
 							profile_pic = profile_pic,
 							practice_info = practice_info

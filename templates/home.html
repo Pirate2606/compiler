@@ -27,7 +27,7 @@
 		{% if not current_user.is_authenticated %}
 			<a class="btn btn-success btn-lg" href="{{ url_for('google.login') }}">Get Started</a>
 		{% else %}
-			<a class="btn btn-success btn-lg" href="#">Get Started</a>
+			<a class="btn btn-success btn-lg" href="{{ url_for('practice') }}">Get Started</a>
 		{% endif %}
 	</div>
 
