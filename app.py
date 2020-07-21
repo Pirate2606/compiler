@@ -9,6 +9,9 @@ from models import db, login_manager, app, User, Contest, Practice
 from oauth import blueprint
 from cli import create_db
 from flask_migrate import Migrate
+import datetime
+from time import strptime
+
 
 
 #################################
@@ -104,6 +107,27 @@ def submit():
 def contest():
 	profile_pic = get_profile_pic()
 	contest = Contest()
+	allContests = contest.query.all()
+	for time in allContests:
+		if time.start is not None:
+			start = time.start.split(' - ')
+			startDateTime = get_dateTime(start)
+			started = startDateTime < datetime.datetime.now()
+			if started == True and time.contest_status == "future":
+				time.contest_status = "active"
+				db.session.add(time)
+				db.session.commit()
+
+		if time.end is not None:
+			end = time.end.split(' - ')
+			endDateTime = get_dateTime(end)
+			ended = endDateTime < datetime.datetime.now()
+			if ended == True and time.contest_status != "in-active":
+				time.contest_status = "in-active"
+				db.session.add(time)
+				db.session.commit()
+
+
 	active_contests = contest.query.filter_by(contest_status = "active").all()
 	in_active_contests = contest.query.filter_by(contest_status = "in-active").all()
 	future_contests = contest.query.filter_by(contest_status = "future").all()
@@ -139,6 +163,19 @@ def page_not_found(error):
 ##################################
 ######### FUNCTIONS #############
 #################################
+
+def get_dateTime(dateTime):
+	dateList = str(dateTime[0]).split(" ")    # dateList = [date, month, year]
+	timeList = str(dateTime[1]).split(":")    # timeList = [hour, minutes, second]
+	finalDateTime = datetime.datetime(int(dateList[2]),                        # year
+									  strptime(dateList[1], '%b').tm_mon,      # month
+									  int(dateList[0]),                        # date
+									  int(timeList[0]),                        # hour
+									  int(timeList[1]),                        # minutes
+									  int(timeList[2]),                        # seconds
+									  0                                        # microseconds
+					)
+	return finalDateTime
 
 def get_profile_pic():
 
