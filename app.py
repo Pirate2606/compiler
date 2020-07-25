@@ -5,18 +5,22 @@ from flask_login import logout_user, login_required, current_user
 import subprocess, os
 from subprocess import PIPE
 from config import Config
-from models import db, login_manager, app, User, Contest, Practice
+from models import db, login_manager, app, User, Contest, Practice, Profile
 from oauth import blueprint
 from cli import create_db
 from flask_migrate import Migrate
 import datetime
 from time import strptime
-
+from profile import codechef_info, leetcode_info, hackerearth_info
+from threading import Thread
+from sqlalchemy.exc import IntegrityError
 
 
 #################################
 #### SETTING UP APP ############
 ################################
+
+
 Migrate(app, db)
 
 app.config.from_object(Config)                                   #app.config
@@ -34,11 +38,26 @@ os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 ########### ROUTES ###############
 ##################################
 
+
 @app.route("/", methods = ['GET','POST'])
 def home():
 	home = 1
 	form = Feedback()
 	profile_pic = get_profile_pic()
+	try:
+		email = get_email().split("@")[0]
+		profile = Profile()
+		current_user_profile = profile.query.filter_by(username=email).first()
+	except :
+		current_user_profile = None
+	try:
+		if request.method == "POST":
+				name = request.form['user_name']
+				current_user_profile.name = name
+				db.session.add(current_user_profile)
+				db.session.commit()
+	except:
+		pass
 	if form.validate_on_submit():
 
 		email = form.email.data
@@ -49,7 +68,8 @@ def home():
 
 		return redirect(url_for('home'))
 
-	return render_template("home.html", form = form, home = home, profile_pic = profile_pic)
+	return render_template("home.html", form = form, home = home, profile_pic = profile_pic, current_user_profile=current_user_profile)
+
 
 @app.route("/logout")
 @login_required
@@ -130,6 +150,7 @@ def contest():
 
 	active_contests = contest.query.filter_by(contest_status = "active").all()
 	in_active_contests = contest.query.filter_by(contest_status = "in-active").all()
+	in_active_contests.reverse()              # for arraging the ended conests in reverse order
 	future_contests = contest.query.filter_by(contest_status = "future").all()
 
 	return render_template('contest.html',
@@ -153,6 +174,155 @@ def practice():
 	)
 
 
+@app.route('/refresh_codechef')
+def refreshCodechef():
+	print("Started refresh codechef")
+	email = get_email().split("@")[0]
+	profile = Profile()
+	current_user_profile = profile.query.filter_by(username=email).first()
+
+	user_name = current_user_profile.codechef_username
+	background_thread = Thread(target=codechef_info, args=(user_name, email,))
+	background_thread.start()
+
+	print("Doing Refresh codechef")
+	return ("nothing")
+
+
+@app.route('/refresh_leetcode')
+def refreshLeetcode():
+	print("Started refresh leetcode")
+	email = get_email().split("@")[0]
+	profile = Profile()
+	current_user_profile = profile.query.filter_by(username=email).first()
+
+	user_name = current_user_profile.leetcode_username
+	background_thread = Thread(target=leetcode_info, args=(user_name, email,))
+	background_thread.start()
+
+	print("Doing Refresh leetcode")
+	return ("nothing")
+
+
+@app.route('/refresh_hackerearth')
+def refreshHackerearth():
+	print("Started refresh hackerearth")
+	email = get_email().split("@")[0]
+	profile = Profile()
+	current_user_profile = profile.query.filter_by(username=email).first()
+
+	user_name = current_user_profile.hackerearth_username
+	background_thread = Thread(target=hackerearth_info, args=(user_name, email,))
+	background_thread.start()
+
+	print("Doing Refresh hackerearth")
+	return ("nothing")
+
+
+@app.route('/profile', methods = ['GET','POST'])
+@login_required
+def profile_page():
+	profile_pic = get_profile_pic()
+	email = get_email().split("@")[0]
+	profile = Profile()
+	current_user_profile = profile.query.filter_by(username=email).first()
+
+	if current_user_profile.codechef_username_correct == "0":
+		codechef_is_connected = 0
+		current_user_profile.codechef_username = None
+		db.session.add(current_user_profile)
+		db.session.commit()
+
+	if current_user_profile.leetcode_username_correct == "0":
+		leetcode_is_connected = 0
+		current_user_profile.leetcode_username = None
+		db.session.add(current_user_profile)
+		db.session.commit()
+
+
+	if current_user_profile.hackerearth_username_correct == "0":
+		hackerearth_is_connected = 0
+		current_user_profile.hackerearth_username = None
+		db.session.add(current_user_profile)
+		db.session.commit()
+
+	if current_user_profile is not None:
+
+		if current_user_profile.codechef_username is not None:
+			codechef_is_connected = 1
+		else:
+			codechef_is_connected = 0
+			if request.method == "POST":
+				try:
+					current_user_profile.codechef_username = request.form['codechef_username']
+					try:
+						db.session.add(current_user_profile)
+						db.session.commit()
+						flash("Your codechef profile will be linked within 9-10 minutes.")
+						codechef_is_connected = 1
+						user_name = current_user_profile.codechef_username
+						background_thread = Thread(target=codechef_info, args=(user_name, email,))
+						background_thread.start()
+					except IntegrityError:
+						print("FAILED")
+						db.session.rollback()
+						flash("This codechef profile is already linked to some other account.")
+				except :
+					pass
+
+		if current_user_profile.leetcode_username is not None:
+			leetcode_is_connected = 1
+		else:
+			leetcode_is_connected = 0
+			if request.method == "POST":
+				try:
+					current_user_profile.leetcode_username = request.form['leetcode_username']
+					try:
+						db.session.add(current_user_profile)
+						db.session.commit()
+						flash("Your leetcode profile will be linked within 4-5 minutes.")
+						leetcode_is_connected = 1
+						user_name = current_user_profile.leetcode_username
+						background_thread = Thread(target=leetcode_info, args=(user_name, email,))
+						background_thread.start()
+					except IntegrityError:
+						print("FAILED")
+						db.session.rollback()
+						flash("This leetcode profile is already linked to some other account.")
+				except :
+					pass
+
+		if current_user_profile.hackerearth_username is not None:
+			hackerearth_is_connected = 1
+		else:
+			hackerearth_is_connected = 0
+			if request.method == "POST":
+				try:
+					current_user_profile.hackerearth_username = request.form['hackerearth_username']
+					try:
+						db.session.add(current_user_profile)
+						db.session.commit()
+						flash("Your hackerearth profile will be linked within 4-5 minutes.")
+						hackerearth_is_connected = 1
+						user_name = current_user_profile.hackerearth_username
+						background_thread = Thread(target=hackerearth_info, args=(user_name, email,))
+						background_thread.start()
+					except IntegrityError:
+						print("FAILED")
+						db.session.rollback()
+						flash("This hackerearth profile is already linked to some other account.")
+				except :
+					pass
+
+		return render_template('profile_page.html',
+								profile_pic=profile_pic,
+								codechef_is_connected=codechef_is_connected,
+								leetcode_is_connected=leetcode_is_connected,
+								hackerearth_is_connected=hackerearth_is_connected,
+								current_user_profile=current_user_profile
+		)
+
+
 @app.errorhandler(404)
 def page_not_found(error):
 	profile_pic = get_profile_pic()
@@ -163,6 +333,7 @@ def page_not_found(error):
 ##################################
 ######### FUNCTIONS #############
 #################################
+
 
 def get_dateTime(dateTime):
 	dateList = str(dateTime[0]).split(" ")    # dateList = [date, month, year]
@@ -176,6 +347,18 @@ def get_dateTime(dateTime):
 									  0                                        # microseconds
 					)
 	return finalDateTime
+
+
+def get_email():
+
+	email = ""
+	g.user = current_user.get_id()
+	if g.user:
+		id = int(g.user)
+		email = User.query.get(id).email
+
+	return email
+
 
 def get_profile_pic():
 

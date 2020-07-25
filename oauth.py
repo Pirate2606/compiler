@@ -4,7 +4,7 @@ from flask_dance.contrib.google import make_google_blueprint
 from flask_dance.consumer import oauth_authorized, oauth_error
 from flask_dance.consumer.storage.sqla import SQLAlchemyStorage
 from sqlalchemy.orm.exc import NoResultFound
-from models import db, User, OAuth
+from models import db, User, OAuth, Profile
 
 
 
@@ -45,10 +45,11 @@ def google_logged_in(blueprint, token):
     else:
         # Create a new local user account for this user
         user = User(email=info["email"], profile_pic=info["picture"])
+        profile = Profile(username=info["email"].split("@")[0])
         # Associate the new local user account with the OAuth token
         oauth.user = user
         # Save and commit our database models
-        db.session.add_all([user, oauth])
+        db.session.add_all([user, oauth, profile])
         db.session.commit()
         # Log in the new local user account
         login_user(user)

@@ -200,3 +200,64 @@ body {
 .four-container {
     text-align: center;
 }
+
+/* PROFILE PAGE */
+
+.profile-user-image {
+    margin: auto;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    height: 100px;
+    width: 100px;
+}
+
+.profile-name {
+    font-size: 35px;
+}
+
+.profile-username {
+    font-size: 20px;
+}
+
+.codechef-block {
+    background: linear-gradient(to bottom, rgba(255,255,255,0.6), rgba(0,0,0,0.3));
+    margin-top: 20px;
+    border: 3px black solid;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.basic-info {
+    text-align: center;
+}
+
+.data {
+    font-size: 20px;
+}
+
+.block-heading {
+    font-size: 40px;
+}
+
+.refresh-heading {
+    text-align: center;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.refresh-button {
+    text-align: center;
+}
+.data-result {
+    background-color: #5CB85C;
+    font-size: 20px;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.data-result-personal {
+    font-size: 20px;
+}
+
+table {
+    width: 320px;
+}

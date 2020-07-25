@@ -3,8 +3,36 @@ from flask_login import LoginManager, UserMixin
 from flask_dance.consumer.storage.sqla import OAuthConsumerMixin
 from flask import Flask
 
+
 app = Flask(__name__)
 db = SQLAlchemy()
+
+
+class Profile(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(256), unique=True)
+    name = db.Column(db.String(256))
+    codechef_username = db.Column(db.String(256), unique=True)
+    codechef_username_correct = db.Column(db.String(10))
+    codechef_realname = db.Column(db.String(256))
+    codechef_rating = db.Column(db.String(256))
+    codechef_global_rank = db.Column(db.String(256))
+    codechef_local_rank = db.Column(db.String(256))
+    codechef_country = db.Column(db.String(256))
+    leetcode_username = db.Column(db.String(256), unique=True)
+    leetcode_username_correct = db.Column(db.String(10))
+    leetcode_realname = db.Column(db.String(256))
+    leetcode_contest_finished = db.Column(db.String(256))
+    leetcode_contest_rating = db.Column(db.String(256))
+    leetcode_global_rank = db.Column(db.String(256))
+    leetcode_solved_questions = db.Column(db.String(256))
+    leetcode_accepted_submissions = db.Column(db.String(256))
+    hackerearth_username = db.Column(db.String(256), unique=True)
+    hackerearth_username_correct = db.Column(db.String(10))
+    hackerearth_realname = db.Column(db.String(256))
+    hackerearth_rating = db.Column(db.String(256))
+    hackerearth_skills = db.Column(db.String(256))
+    hackerearth_education = db.Column(db.String(256))
 
 
 class Practice(db.Model):
